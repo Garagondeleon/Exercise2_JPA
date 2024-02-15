@@ -2,6 +2,8 @@ package com.gabo.springdata.shoppingcar.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +13,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name ="PRODUCTS")
@@ -19,10 +24,13 @@ public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="PRODUCT_ID")
-	private int product_id;
+	private int productId;
 	@Column(name="NAME")
+	@NotNull
+	@NotEmpty
 	private String name;
-	@Column(name="PRICE")
+	@NotNull
+	@Min(1)
 	private int price;
 	@Lob
 	@Column(name="IMAGE")
@@ -30,19 +38,21 @@ public class Product {
 	@Column(name="DESCRIPTION")
 	private String description;
 	@Column(name="TOTAL_PRODUCTS_INVENTORY")
-	private int total_products_inventory;
+	@NotNull
+	private int totalProductsInventory;
 	@Column(name="STATUS")
 	private boolean status;
 	
 	@OneToMany(mappedBy="product",cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<OrderHistory> order;
 
-	public int getProduct_id() {
-		return product_id;
+	public int getProductId() {
+		return productId;
 	}
 
-	public void setProduct_id(int product_id) {
-		this.product_id = product_id;
+	public void setProductId(int productId) {
+		this.productId = productId;
 	}
 
 	public String getName() {
@@ -77,12 +87,12 @@ public class Product {
 		this.description = description;
 	}
 
-	public int getTotal_products_inventory() {
-		return total_products_inventory;
+	public int getTotalProductsInventory() {
+		return totalProductsInventory;
 	}
 
-	public void setTotal_products_inventory(int total_products_inventory) {
-		this.total_products_inventory = total_products_inventory;
+	public void setTotalProductsInventory(int totalProductsInventory) {
+		this.totalProductsInventory = totalProductsInventory;
 	}
 
 	public boolean isStatus() {
@@ -93,7 +103,7 @@ public class Product {
 		this.status = status;
 	}
 	public void addOneToInventory() {
-		this.total_products_inventory = this.total_products_inventory+1;
+		this.totalProductsInventory = this.totalProductsInventory+1;
 	}
 
 	public List<OrderHistory> getOrder() {

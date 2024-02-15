@@ -2,6 +2,8 @@ package com.gabo.springdata.shoppingcar.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +12,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name ="USERS")
@@ -18,27 +22,34 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="USER_ID")
-	private int user_id;
+	private int userId;
+	@NotNull
+	@NotEmpty
 	@Column(name="NAME")
 	private String name;
+	@NotNull
+	@NotEmpty
 	@Column(name="LAST_NAME")
-	private String last_name;
+	private String lastName;
 	@Column(name="BIO")
 	private String bio;
+	@NotNull
+	@NotEmpty
 	@Column(name="EMAIL")
 	private String email;
 	@Column(name="AREA_OF_INTEREST")
-	private String area_of_interest;
+	private String areaOfInterest;
 	
 	@OneToMany(mappedBy="user",cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<OrderHistory> order;
 
-	public int getUser_id() {
-		return user_id;
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setUser_id(int user_id) {
-		this.user_id = user_id;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public String getName() {
@@ -49,12 +60,12 @@ public class User {
 		this.name = name;
 	}
 
-	public String getLast_name() {
-		return last_name;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setLast_name(String last_name) {
-		this.last_name = last_name;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getBio() {
@@ -73,12 +84,12 @@ public class User {
 		this.email = email;
 	}
 
-	public String getArea_of_interest() {
-		return area_of_interest;
+	public String getAreaOfInterest() {
+		return areaOfInterest;
 	}
 
-	public void setArea_of_interest(String area_of_interest) {
-		this.area_of_interest = area_of_interest;
+	public void setAreaOfInterest(String areaOfInterest) {
+		this.areaOfInterest = areaOfInterest;
 	}
 
 	public List<OrderHistory> getOrder() {
