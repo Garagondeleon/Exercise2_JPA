@@ -14,7 +14,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/Users")
+@RequestMapping("/users")
 public class UserController {
 	
 	private UserRepository repository;
@@ -37,7 +37,7 @@ public class UserController {
 	
 	//Update an existing user
 	@PostMapping("/update/{id}")
-	public User updateUserById( @PathVariable("id") Integer id,@Validated @RequestBody User user) {
+	public User updateUserById( @PathVariable("id") int id,@Validated @RequestBody User user) {
 		User tempUser = repository.findById(id).get();
 		if(tempUser == null) {
 			throw new NotFoundException("No match for id: "+id);
@@ -53,7 +53,7 @@ public class UserController {
 	//Delete user
 	@Transactional
 	@PostMapping("/delete/{id}")
-	public User deleteUserById(@PathVariable("id") Integer id) {
+	public User deleteUserById(@PathVariable("id") int id) {
 		User user = repository.findById(id).get();
 		if(user == null) {
 			throw new NotFoundException("No match for id: "+id);

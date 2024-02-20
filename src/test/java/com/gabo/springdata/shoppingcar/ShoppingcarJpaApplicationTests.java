@@ -21,13 +21,6 @@ class ShoppingcarJpaApplicationTests {
 	}
 
 	@Test
-	void testRead() {
-		User user = repository.findById(1).get();
-		System.out.println(user.getName());
-		
-	}
-	
-	@Test
 	void testGetUsers() {
 		List<User> user = repository.findAll();
 		for(User i : user) {

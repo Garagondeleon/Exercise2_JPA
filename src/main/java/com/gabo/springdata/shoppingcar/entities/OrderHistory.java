@@ -2,11 +2,12 @@ package com.gabo.springdata.shoppingcar.entities;
 
 import java.sql.Timestamp;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -17,36 +18,42 @@ import jakarta.persistence.Table;
 public class OrderHistory {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="ORDER_ID")
-	private int order_id;
+	@GenericGenerator(name="ORDER_ID", strategy = "com.gabo.springdata.shoppingcar.IDGenerator.CustomIdGenerator")
+	@GeneratedValue(generator="ORDER_ID")
+	private int orderId;
 	
 	@Column(name="ORDER_DATE")
-	private Timestamp order_date;
+	private Timestamp orderDate;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(targetEntity = User.class,fetch = FetchType.LAZY)
 	@JoinColumn(name="USER_ID")
 	private User user;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@Column(name="USER_ID",insertable=false, updatable=false )
+	private int userId;
+	
+	@ManyToOne(targetEntity = Product.class,fetch = FetchType.LAZY)
 	@JoinColumn(name="PRODUCT_ID")
 	private Product product;
 	
+	@Column(name="USER_ID",insertable=false, updatable=false)
+	private int productId;
+	
 
-	public Timestamp getOrder_date() {
-		return order_date;
+	public Timestamp getOrderDate() {
+		return orderDate;
 	}
 
-	public void setOrder_date(Timestamp order_date) {
-		this.order_date = order_date;
+	public void setOrderDate(Timestamp orderDate) {
+		this.orderDate = orderDate;
 	}
 
-	public int getOrder_id() {
-		return order_id;
+	public int getOrderId() {
+		return orderId;
 	}
 
-	public void setOrder_id(int order_id) {
-		this.order_id = order_id;
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
 	}
 
 	public User getUser() {
@@ -64,5 +71,13 @@ public class OrderHistory {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
-
+	
+	public String checkInventory(Product product) {
+		if(this.getProduct().getTotalProductsInventory()==0) {
+			return null;
+		}else {	
+			this.getProduct().subtractOneToInventory();
+		}
+		return "notNull";
+	}
 }

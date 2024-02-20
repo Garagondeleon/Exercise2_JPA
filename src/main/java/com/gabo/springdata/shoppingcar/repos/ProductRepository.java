@@ -8,8 +8,10 @@ import com.gabo.springdata.shoppingcar.entities.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Integer>, CrudRepository<Product,Integer> {
 
-	List<Product> findByName(String name);
+	List<Product> findByName(String string);
 
 	List<Product> findByPriceBetween(int minPrice, int maxPrice);
+
+	List<Product> findAllByName(String[] names);
 
 }

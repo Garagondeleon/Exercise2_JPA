@@ -18,7 +18,7 @@ import com.gabo.springdata.shoppingcar.repos.ProductRepository;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/Products")
+@RequestMapping("/products")
 public class ProductController {
 	
 	private ProductRepository repository;
@@ -44,7 +44,7 @@ public class ProductController {
 	
 	//Update an existing product
 	@PostMapping("/update/{id}")
-	public Product updateProductById( @PathVariable("id") Integer id,@RequestBody @Validated Product product) {
+	public Product updateProductById( @PathVariable("id") int id,@RequestBody @Validated Product product) {
 		Product tempProduct = repository.findById(id).get();
 		if(tempProduct == null) {
 			throw new NotFoundException("No product with id: "+ id);
@@ -62,7 +62,7 @@ public class ProductController {
 	
 	//Delete existing product
 	@PostMapping("/delete/{id}")
-	public Product deleteProductById(@PathVariable("id") Integer id) {
+	public Product deleteProductById(@PathVariable("id") int id) {
 		Product product = repository.findById(id).orElse(null);
 		if(product == null) {
 			throw new NotFoundException("No product with id: "+ id);

@@ -2,13 +2,14 @@ package com.gabo.springdata.shoppingcar.entities;
 
 import java.util.List;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
@@ -22,8 +23,8 @@ import jakarta.validation.constraints.NotNull;
 public class Product {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="PRODUCT_ID")
+	@GenericGenerator(name="PRODUCT_ID", strategy = "com.gabo.springdata.shoppingcar.IDGenerator.CustomIdGenerator")
+	@GeneratedValue(generator="PRODUCT_ID")
 	private int productId;
 	@Column(name="NAME")
 	@NotNull
@@ -46,6 +47,10 @@ public class Product {
 	@OneToMany(mappedBy="product",cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<OrderHistory> order;
+	
+	@OneToMany(mappedBy="product",cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Wishlist> wishlist;
 
 	public int getProductId() {
 		return productId;
@@ -105,6 +110,9 @@ public class Product {
 	public void addOneToInventory() {
 		this.totalProductsInventory = this.totalProductsInventory+1;
 	}
+	public void subtractOneToInventory() {
+		this.totalProductsInventory = this.totalProductsInventory-1;
+	}
 
 	public List<OrderHistory> getOrder() {
 		return order;
@@ -112,6 +120,14 @@ public class Product {
 
 	public void setOrder(List<OrderHistory> order) {
 		this.order = order;
+	}
+
+	public List<Wishlist> getWishlist() {
+		return wishlist;
+	}
+
+	public void setWishlist(List<Wishlist> wishlist) {
+		this.wishlist = wishlist;
 	}
 	
 	
